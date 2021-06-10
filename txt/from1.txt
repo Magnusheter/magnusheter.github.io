@@ -1,0 +1,45 @@
+
+<div class="row h-5 justify-content-center align-items-center">
+        <div class="col-5 col-md-8 col-lg-6">
+            <h1 style="text-align: center; margin-top: 5px;">Regístrate</h1>
+            <div class="form-group">
+                <label for="username">Usuario:</label><br><br>
+                <input type="text"  id="user"  name="user" placeholder="usuario">
+            </div>
+            <div class="form-group">
+                <label for="correo">Correo:</label><br><br>
+                <input type="text" id="correo" name="correo" placeholder="ejemplo@gmail.com">
+            </div>
+            
+
+            <div class="form-group">
+                <label for="password" style="margin-top: 15px;">Contraseña:</label><br><br>
+                <input type="password"  id="password"  name="contraseña" placeholder="contraseña">
+            </div>            
+            <div class="form-group">
+                <br><br><input type="password"  id="conpassword"  name="confpassword" placeholder="Confirmar Contraseña">
+            </div>
+            <div class="col">
+                <label class="mens">Contraseña de mas de 8</label>
+                <br><button class="btn btn-primary" type="button" onclick="mostrarContrasena()">Mostrar</button>
+            </div>
+            
+
+
+            <div class="form-group">
+                <br><button type="button" class="btn btn-dark" style="margin-top: 35px;" onclick="validpassword()">Enviar</button>
+            </div>
+           <form action="">
+            <div id="msg"></div>
+            <div id="error" class="alert alert-danger ocultar" role="alert">
+                Las contraseñas no coinciden.
+            </div>
+            <div id="bien" class="alert alert-success ocultar" role="alert">
+                Las contraseñas coinciden.
+            </div>
+        </form>
+        <div>
+            <p id="mensaje" style="text-align: center; color:black"></p>
+        </div>
+    </div>
+</div>

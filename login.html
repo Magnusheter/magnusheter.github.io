@@ -1,0 +1,176 @@
+<?php
+
+    session_start();
+
+    if(isset($_SESSION)['usuario'])
+    {
+        header("location: ../perfil.html");
+    }
+
+?>
+
+
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de sesion</title>
+    <link  href="css/estiloslogin.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" language = "javascript">
+        var xhr;
+        var globalMode;
+        function createActiveObject(){
+            if ( window.ActiveXObject ){
+                xhr = new ActiveXObject( "Microsoft.XMLHttp" );      
+            }else 
+                if( ( window.XMLHttpRequest ) || ( typeof XMLHttpRequest ) !== undefined ){
+                    xhr = new XMLHttpRequest();
+                }
+                else {
+                    alert( "Su navegador no tiene soporte para AJAX" );
+                    return;
+                }
+            }
+
+        function loadForm(mode) {
+            xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                document.getElementById("main-div").innerHTML = xhr.responseText;
+            }
+            };
+            globalMode = mode;
+            
+            switch(mode){
+                case "olv":
+                    xhr.open("GET", "txt/form.txt", true);
+                    xhr.send();
+                break;
+                case "regis":
+                    xhr.open("GET", "txt/from1.txt", true);
+                    xhr.send();
+                break;
+            }
+        }
+        
+        function validarD(){
+            var name_element = document.getElementById('user').value;
+            var correo_element = document.getElementById('correo').value;
+            var pass_element = document.getElementById('password').value;
+            if(pass_element.length < 8){
+                alert("La contraseña es muy corta");
+            }
+            else{ 
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4 && xhr.status == 200){
+                        var data = xhr.responseText;
+                        switch(globalMode){
+                            case 'init':
+                                if(data == 1){
+                                    top.location.href = "usersession.html";
+                                }else{
+                                    alert("No esta registrado");
+                                }
+                            break;
+                            case 'regis':
+                                if(data == 1){
+                                    top.location.href = "personalinf.html"
+                                }else{
+                                    alert("Error al registrar");
+                                }
+                            break;
+                        }
+                    }
+                }
+                xhr.open("GET","Valida?name="+name_element+"&contra="+pass_element+"&correo="+correo_element+"&mode="+globalMode,true);
+                xhr.send(null);
+            }
+        }
+        
+        function validar() {
+            var valor = document.getElementById('us').value;
+            const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            if (re.test(valor)){
+                alert("La dirección es correcta.");
+                xhr.open("GET","server?name="+valor,true);
+                xhr.send(null);
+            } else {
+                alert("La dirección de email es incorrecta.");
+            }
+        }
+        
+        
+        function validpassword(){
+            var pass_element = document.getElementById('password').value;
+            var confpass_element = document.getElementById('conpassword').value;
+            
+            if(pass_element != confpass_element){
+                document.getElementById("error").classList.remove("ocultar");
+                document.getElementById("bien").classList.remove("mostrar");
+                return false;
+            } else {
+                validarD();
+                document.getElementById("error").classList.remove("mostrar");
+                document.getElementById("bien").classList.remove("ocultar");
+                return true; 
+            }    
+        }
+    
+      function mostrarContrasena(){
+      var tipo = document.getElementById("password");
+      var tipos = document.getElementById("conpassword");
+      if(tipo.type == "password" && tipos.type == "password"){
+          tipo.type = "text";
+          tipos.type = "text";
+      }else{
+          tipo.type = "password";
+          tipos.type = "password";
+      }
+
+  }
+    </script>
+  </head>
+
+  <body onload="createActiveObject()">
+    <div id="main-div">
+      <div class="container">
+        <div class="child">
+            <a href="index.html"><img src="img/LOGO V4.PNG"  alt="Inicio" class="logo"></a>
+            <br><br><h1>INICIO DE SESIÓN</h1>
+            <form action="/php/login_usuario.php" class="form-login" method="POST">
+                <div class="form-group">
+                <input type="text" name="usuario"><span class="barra"></span>
+                <label for="username">Usuario</label>
+                </div>
+                <div class="form-group">
+                <input type="password" name="contra"><span class="barra"></span>
+                <label for="password" style="margin-top: 15px;">Contraseña</label>
+                </div>
+                <div class="botones">
+                <button type="button" class="btn btn-dark" onclick="loadForm('init')">Iniciar Sesión</button>
+            </form>
+            <button type="button" class="btn btn-dark" onclick="loadForm('olv')">Olvide la contraseña</button>
+            <br>
+            </div>
+            <div class="Registro">
+            <br>
+            ¿No tienes una cuenta?
+            <button type="button" class="btn-dark" onclick="window.location='registro.html'">Registrate</button>
+
+            
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>  
+</html>
